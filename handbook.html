@@ -117,18 +117,22 @@
 </head>
 <body>
 
-<!-- PASSWORD SCREEN -->
+<!-- ACCESS SCREEN -->
 <div id="password-screen">
   <div class="lock-card">
-    <div class="lock-icon">🔒</div>
+    <div class="lock-icon" id="lock-icon">🔒</div>
     <div class="brand">Scrubs &amp; Strollers</div>
     <h1>The NHS Doctor's Maternity Pay Handbook</h1>
-    <p>This page is for verified buyers only. Enter your access password below to unlock your handbook.</p>
-    <input type="password" id="pw-input" placeholder="Enter password" onkeydown="if(event.key==='Enter')unlock()">
-    <button onclick="unlock()">Unlock My Handbook →</button>
-    <div class="error-msg" id="error-msg">Incorrect password. Please check your purchase confirmation email.</div>
-    <div class="footer-note">
-      Purchased but don't have your password? Email us at hello@scrubsandstrollers.co.uk
+    <p id="access-msg">Verifying your access, please wait…</p>
+    <div class="error-msg" id="error-msg" style="display:none">
+      We couldn't verify your purchase. Please use the link from your confirmation email, or
+      <a href="mailto:hello@scrubsandstrollers.co.uk" style="color:#8B2500">contact us</a> for help.
+    </div>
+    <div id="buy-cta" style="display:none;margin-top:16px">
+      <a href="/" style="display:inline-block;background:#8B2500;color:white;padding:12px 28px;border-radius:100px;text-decoration:none;font-size:14px;font-weight:600">Get the Handbook — £14.99 →</a>
+    </div>
+    <div class="footer-note" id="footer-note" style="display:none">
+      Already purchased? Use the link in your confirmation email, or email us at hello@scrubsandstrollers.co.uk
     </div>
   </div>
 </div>
@@ -2930,24 +2934,40 @@ function calculate() {
 </div>
 
 <script>
-function unlock() {
-  var pw = document.getElementById('pw-input').value.trim().toLowerCase();
-  if (pw === 'moneyhoney') {
-    document.getElementById('password-screen').style.display = 'none';
-    document.getElementById('handbook-content').style.display = 'block';
-    // scroll to top
-    window.scrollTo(0, 0);
-  } else {
-    var err = document.getElementById('error-msg');
-    err.style.display = 'block';
-    document.getElementById('pw-input').value = '';
-    document.getElementById('pw-input').focus();
-    // shake animation
-    var input = document.getElementById('pw-input');
-    input.style.borderColor = '#DC2626';
-    setTimeout(function() { input.style.borderColor = '#E8D5C4'; }, 1500);
+async function verifyAccess() {
+  var params = new URLSearchParams(window.location.search);
+  var session = params.get('session');
+
+  if (!session) {
+    document.getElementById('access-msg').textContent = 'No access link detected.';
+    document.getElementById('error-msg').style.display = 'block';
+    document.getElementById('buy-cta').style.display = 'block';
+    document.getElementById('footer-note').style.display = 'block';
+    return;
+  }
+
+  try {
+    var res = await fetch('/.netlify/functions/verify-payment?session=' + encodeURIComponent(session));
+    var data = await res.json();
+
+    if (data.valid) {
+      document.getElementById('password-screen').style.display = 'none';
+      document.getElementById('handbook-content').style.display = 'block';
+      window.scrollTo(0, 0);
+    } else {
+      document.getElementById('access-msg').textContent = 'Access denied.';
+      document.getElementById('error-msg').style.display = 'block';
+      document.getElementById('buy-cta').style.display = 'block';
+      document.getElementById('footer-note').style.display = 'block';
+    }
+  } catch (e) {
+    document.getElementById('access-msg').textContent = 'Could not verify access. Please check your connection and try again.';
+    document.getElementById('error-msg').style.display = 'none';
+    document.getElementById('footer-note').style.display = 'block';
   }
 }
+
+verifyAccess();
 </script>
 
 </body>
