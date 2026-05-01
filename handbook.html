@@ -2934,15 +2934,26 @@ function calculate() {
 </div>
 
 <script>
+function showHandbook() {
+  document.getElementById('password-screen').style.display = 'none';
+  document.getElementById('handbook-content').style.display = 'block';
+  window.scrollTo(0, 0);
+}
+
+function showError() {
+  document.getElementById('access-msg').textContent = 'Access denied.';
+  document.getElementById('error-msg').style.display = 'block';
+  document.getElementById('buy-cta').style.display = 'block';
+  document.getElementById('footer-note').style.display = 'block';
+}
+
 async function verifyAccess() {
   var params = new URLSearchParams(window.location.search);
-  var session = params.get('session');
+  var session = params.get('session') || localStorage.getItem('sns_session');
 
   if (!session) {
     document.getElementById('access-msg').textContent = 'No access link detected.';
-    document.getElementById('error-msg').style.display = 'block';
-    document.getElementById('buy-cta').style.display = 'block';
-    document.getElementById('footer-note').style.display = 'block';
+    showError();
     return;
   }
 
@@ -2951,18 +2962,14 @@ async function verifyAccess() {
     var data = await res.json();
 
     if (data.valid) {
-      document.getElementById('password-screen').style.display = 'none';
-      document.getElementById('handbook-content').style.display = 'block';
-      window.scrollTo(0, 0);
+      localStorage.setItem('sns_session', session);
+      showHandbook();
     } else {
-      document.getElementById('access-msg').textContent = 'Access denied.';
-      document.getElementById('error-msg').style.display = 'block';
-      document.getElementById('buy-cta').style.display = 'block';
-      document.getElementById('footer-note').style.display = 'block';
+      localStorage.removeItem('sns_session');
+      showError();
     }
   } catch (e) {
     document.getElementById('access-msg').textContent = 'Could not verify access. Please check your connection and try again.';
-    document.getElementById('error-msg').style.display = 'none';
     document.getElementById('footer-note').style.display = 'block';
   }
 }
