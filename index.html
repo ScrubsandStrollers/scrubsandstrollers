@@ -1287,8 +1287,8 @@ footer{
             <div class="buy-feature">PDF + HTML versions</div>
             <div class="buy-feature">Free future updates</div>
           </div>
-          <a href="https://payhip.com/buy?s=1&cart_links%5B%5D=rI83T&qty%5BrI83T%5D=1" class="buy-btn" target="_blank">Buy Now for £14.99 →</a>
-          <p class="buy-guarantee">🔒 Secure checkout via Payhip · Instant delivery · VAT included</p>
+          <button onclick="startCheckout()" class="buy-btn" id="checkout-btn">Buy Now for £14.99 →</button>
+          <p class="buy-guarantee">🔒 Secure checkout via Stripe · Instant access by email · VAT included</p>
           <p style="font-size:12px;color:var(--text-muted);margin-top:8px;">After purchase you will receive your PDF by email, plus a password to access the interactive HTML version with the live calculator at <strong>scrubsandstrollers.co.uk/handbook</strong></p>
         </div>
       </div>
@@ -1861,6 +1861,27 @@ function calculate() {
   document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
+
+async function startCheckout() {
+  const btn = document.getElementById('checkout-btn');
+  btn.textContent = 'Loading...';
+  btn.disabled = true;
+  try {
+    const res = await fetch('/.netlify/functions/create-checkout', { method: 'POST' });
+    const data = await res.json();
+    if (data.url) {
+      window.location.href = data.url;
+    } else {
+      alert('Something went wrong. Please try again.');
+      btn.textContent = 'Buy Now for £14.99 →';
+      btn.disabled = false;
+    }
+  } catch (e) {
+    alert('Something went wrong. Please try again.');
+    btn.textContent = 'Buy Now for £14.99 →';
+    btn.disabled = false;
+  }
+}
 
 function showPage(name) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
