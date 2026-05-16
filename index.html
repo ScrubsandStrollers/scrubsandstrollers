@@ -1861,10 +1861,17 @@ function showPage(name) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('page-' + name).classList.add('active');
   window.scrollTo({top: 0, behavior: 'smooth'});
+  window.location.hash = name === 'home' ? '' : name;
   if (name === 'calculator' && localStorage.getItem('mc-subscribed')) {
     mcDismissOverlay();
   }
 }
+
+(function initFromHash() {
+  const hash = window.location.hash.replace('#', '');
+  const valid = ['home', 'calculator', 'about', 'buy', 'links'];
+  if (hash && valid.includes(hash)) showPage(hash);
+})();
 
 function toggleMenu() {
   const m = document.getElementById('mobileMenu');
