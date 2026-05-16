@@ -981,6 +981,20 @@ footer{
 
 <!-- ══════════════ CALCULATOR PAGE ══════════════ -->
 <div id="page-calculator" class="page">
+
+  <!-- EMAIL GATE OVERLAY -->
+  <div id="mc-overlay" style="position:fixed;inset:0;z-index:9999;background:rgba(15,23,42,0.85);display:flex;align-items:center;justify-content:center;padding:24px;">
+    <div style="background:white;border-radius:16px;padding:48px 40px;max-width:480px;width:100%;text-align:center;box-shadow:0 24px 80px rgba(0,0,0,0.3);">
+      <div style="font-size:13px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--sage);margin-bottom:12px">Free Tool</div>
+      <h2 style="font-family:'Playfair Display',serif;color:var(--navy);font-size:28px;margin-bottom:12px;letter-spacing:-0.3px">Access the Calculator</h2>
+      <p style="color:var(--text-muted);font-size:15px;margin-bottom:28px;line-height:1.6">Enter your email to get free access — plus practical tips on maximising your NHS maternity pay.</p>
+      <input type="email" id="mc-email" placeholder="your@email.com" style="width:100%;box-sizing:border-box;padding:13px 16px;border-radius:8px;border:1.5px solid var(--border);font-size:15px;outline:none;margin-bottom:12px;" />
+      <button onclick="mcSubscribe()" style="width:100%;background:var(--terracotta);color:white;border:none;padding:14px 24px;border-radius:8px;font-size:16px;font-weight:600;cursor:pointer;">Get Free Access →</button>
+      <div id="mc-message" style="margin-top:12px;font-size:14px;min-height:20px;color:var(--text-muted)"></div>
+      <p style="font-size:12px;color:var(--text-muted);margin-top:16px;margin-bottom:0">No spam. Unsubscribe anytime.</p>
+    </div>
+  </div>
+
   <div style="padding-top:64px;background:var(--cream);min-height:100vh">
     <div style="max-width:960px;margin:0 auto;padding:60px 40px 40px">
       <div class="section-label">Free Tool</div>
@@ -1847,11 +1861,49 @@ function showPage(name) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('page-' + name).classList.add('active');
   window.scrollTo({top: 0, behavior: 'smooth'});
+  if (name === 'calculator' && localStorage.getItem('mc-subscribed')) {
+    mcDismissOverlay();
+  }
 }
 
 function toggleMenu() {
   const m = document.getElementById('mobileMenu');
   m.classList.toggle('open');
+}
+
+function mcDismissOverlay() {
+  const overlay = document.getElementById('mc-overlay');
+  if (overlay) overlay.style.display = 'none';
+  localStorage.setItem('mc-subscribed', '1');
+}
+
+async function mcSubscribe() {
+  const email = document.getElementById('mc-email').value.trim();
+  const msg = document.getElementById('mc-message');
+  if (!email || !email.includes('@')) {
+    msg.style.color = 'var(--terracotta)';
+    msg.textContent = 'Please enter a valid email address.';
+    return;
+  }
+  msg.style.color = 'var(--text-muted)';
+  msg.textContent = 'Subscribing…';
+  try {
+    const res = await fetch('/.netlify/functions/mailchimp-subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email }),
+    });
+    const data = await res.json();
+    if (data.success) {
+      mcDismissOverlay();
+    } else {
+      msg.style.color = 'var(--terracotta)';
+      msg.textContent = data.error || 'Something went wrong. Please try again.';
+    }
+  } catch {
+    msg.style.color = 'var(--terracotta)';
+    msg.textContent = 'Something went wrong. Please try again.';
+  }
 }
 </script>
 </body>
