@@ -29,7 +29,7 @@ exports.handler = async (event) => {
     const sessionId = session.id;
 
     if (customerEmail) {
-      const handbookUrl = `https://scrubsandstrollers.co.uk/handbook?session=${sessionId}`;
+      const handbookUrl = `https://scrubsandstrollers.com/handbook?session=${sessionId}`;
       const firstName = customerName ? customerName.split(' ')[0] : 'there';
 
       try {
@@ -65,7 +65,7 @@ exports.handler = async (event) => {
                     </p>
                   </div>
                   <p style="font-size:13px;color:#9B8880;line-height:1.6;margin:0">
-                    Questions? Reply to this email or contact us at <a href="mailto:hello@scrubsandstrollers.co.uk" style="color:#C1440E">hello@scrubsandstrollers.co.uk</a>
+                    Questions? Reply to this email or contact us at <a href="mailto:hello@scrubsandstrollers.com" style="color:#C1440E">hello@scrubsandstrollers.com</a>
                   </p>
                 </div>
               </div>

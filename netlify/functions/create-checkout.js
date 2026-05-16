@@ -5,7 +5,7 @@ exports.handler = async (event) => {
     return { statusCode: 405, body: 'Method Not Allowed' };
   }
 
-  const origin = event.headers.origin || 'https://scrubsandstrollers.co.uk';
+  const origin = event.headers.origin || 'https://scrubsandstrollers.com';
 
   try {
     const session = await stripe.checkout.sessions.create({
