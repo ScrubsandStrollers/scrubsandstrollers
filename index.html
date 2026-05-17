@@ -1024,19 +1024,6 @@ footer{
 <!-- ══════════════ CALCULATOR PAGE ══════════════ -->
 <div id="page-calculator" class="page">
 
-  <!-- EMAIL GATE OVERLAY -->
-  <div id="mc-overlay" style="position:fixed;inset:0;z-index:9999;background:rgba(15,23,42,0.85);display:flex;align-items:center;justify-content:center;padding:24px;">
-    <div style="background:white;border-radius:16px;padding:48px 40px;max-width:480px;width:100%;text-align:center;box-shadow:0 24px 80px rgba(0,0,0,0.3);">
-      <div style="font-size:13px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--sage);margin-bottom:12px">Free Tool</div>
-      <h2 style="font-family:'Playfair Display',serif;color:var(--navy);font-size:28px;margin-bottom:12px;letter-spacing:-0.3px">Access the Calculator</h2>
-      <p style="color:var(--text-muted);font-size:15px;margin-bottom:28px;line-height:1.6">Enter your email to get free access — plus practical tips on maximising your NHS maternity pay.</p>
-      <input type="email" id="mc-email" placeholder="your@email.com" style="width:100%;box-sizing:border-box;padding:13px 16px;border-radius:8px;border:1.5px solid var(--border);font-size:15px;outline:none;margin-bottom:12px;" />
-      <button onclick="mcSubscribe()" style="width:100%;background:var(--terracotta);color:white;border:none;padding:14px 24px;border-radius:8px;font-size:16px;font-weight:600;cursor:pointer;">Get Free Access →</button>
-      <div id="mc-message" style="margin-top:12px;font-size:14px;min-height:20px;color:var(--text-muted)"></div>
-      <p style="font-size:12px;color:var(--text-muted);margin-top:16px;margin-bottom:0">No spam. Unsubscribe anytime.</p>
-    </div>
-  </div>
-
   <div style="padding-top:64px;background:var(--cream);min-height:100vh">
     <div style="max-width:960px;margin:0 auto;padding:60px 40px 40px">
       <div class="section-label">Free Tool</div>
@@ -1514,6 +1501,19 @@ footer{
   </div>
 </footer>
 
+<!-- EMAIL GATE OVERLAY — top-level so position:fixed works correctly on iOS Safari -->
+<div id="mc-overlay" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(15,23,42,0.85);align-items:center;justify-content:center;padding:24px;">
+  <div style="background:white;border-radius:16px;padding:48px 40px;max-width:480px;width:100%;text-align:center;box-shadow:0 24px 80px rgba(0,0,0,0.3);">
+    <div style="font-size:13px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--sage);margin-bottom:12px">Free Tool</div>
+    <h2 style="font-family:'Playfair Display',serif;color:var(--navy);font-size:28px;margin-bottom:12px;letter-spacing:-0.3px">Access the Calculator</h2>
+    <p style="color:var(--text-muted);font-size:15px;margin-bottom:28px;line-height:1.6">Enter your email to get free access — plus practical tips on maximising your NHS maternity pay.</p>
+    <input type="email" id="mc-email" placeholder="your@email.com" style="width:100%;box-sizing:border-box;padding:13px 16px;border-radius:8px;border:1.5px solid var(--border);font-size:15px;outline:none;margin-bottom:12px;" />
+    <button onclick="mcSubscribe()" style="width:100%;background:var(--terracotta);color:white;border:none;padding:14px 24px;border-radius:8px;font-size:16px;font-weight:600;cursor:pointer;">Get Free Access →</button>
+    <div id="mc-message" style="margin-top:12px;font-size:14px;min-height:20px;color:var(--text-muted)"></div>
+    <p style="font-size:12px;color:var(--text-muted);margin-top:16px;margin-bottom:0">No spam. Unsubscribe anytime.</p>
+  </div>
+</div>
+
 <script>
 
 // Current SMP weekly rate (April 2026 rate - update annually)
@@ -1900,8 +1900,11 @@ function showPage(name) {
   document.getElementById('page-' + name).classList.add('active');
   window.scrollTo({top: 0, behavior: 'smooth'});
   setTimeout(() => { window.location.hash = name === 'home' ? '' : name; }, 0);
-  if (name === 'calculator' && localStorage.getItem('mc-subscribed')) {
-    mcDismissOverlay();
+  const overlay = document.getElementById('mc-overlay');
+  if (name === 'calculator' && !localStorage.getItem('mc-subscribed')) {
+    overlay.style.display = 'flex';
+  } else {
+    overlay.style.display = 'none';
   }
 }
 
