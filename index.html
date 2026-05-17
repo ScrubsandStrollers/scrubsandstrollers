@@ -702,6 +702,48 @@ nav{
     .dates-grid { grid-template-columns: 1fr; }
     .pay-big { flex-direction: column; }
     .card { padding: 20px; }
+
+    .pay-table, .pay-table thead, .pay-table tbody,
+    .pay-table th, .pay-table td, .pay-table tr { display: block; }
+
+    .pay-table thead tr {
+      position: absolute;
+      top: -9999px;
+      left: -9999px;
+    }
+
+    .pay-table tr {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 10px;
+      padding: 4px 0;
+    }
+
+    .pay-table tbody td {
+      border-bottom: 1px solid var(--border);
+      padding: 8px 12px 8px 44%;
+      position: relative;
+      font-size: 13px;
+      min-height: 36px;
+    }
+
+    .pay-table tbody td:last-child { border-bottom: none; }
+
+    .pay-table tbody td::before {
+      content: attr(data-label);
+      position: absolute;
+      left: 12px;
+      top: 8px;
+      width: 38%;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      line-height: 1.4;
+    }
+
+    .pay-total td { padding: 10px 12px 10px 44%; }
   }
 
   section.section-divider {
@@ -1757,15 +1799,15 @@ function calculate() {
     payRows.forEach((r, i) => {
       const isLast = i === payRows.length - 1;
       payHTML += `<tr ${isLast ? 'class="pay-total"' : ''}>
-        <td>${r.period}</td>
-        <td>${r.desc}</td>
-        <td>${r.weekly === null ? 'See gov.uk' : r.weekly === 0 ? 'Unpaid' : formatMoney(r.weekly) + '/wk'}</td>
-        <td>${r.weekly === null ? '—' : r.weekly === 0 ? '£0' : formatMoney(r.weekly * r.weeks)}</td>
+        <td data-label="Period">${r.period}</td>
+        <td data-label="Pay Type">${r.desc}</td>
+        <td data-label="Weekly (est.)">${r.weekly === null ? 'See gov.uk' : r.weekly === 0 ? 'Unpaid' : formatMoney(r.weekly) + '/wk'}</td>
+        <td data-label="Total (est.)">${r.weekly === null ? '—' : r.weekly === 0 ? '£0' : formatMoney(r.weekly * r.weeks)}</td>
       </tr>`;
     });
 
     if (totalEstimate > 0) {
-      payHTML += `<tr class="pay-total"><td colspan="3"><strong>Total estimated paid maternity income</strong></td><td><strong>${formatMoney(totalEstimate)}</strong></td></tr>`;
+      payHTML += `<tr class="pay-total"><td colspan="3" data-label="Summary"><strong>Total estimated paid maternity income</strong></td><td data-label="Total"><strong>${formatMoney(totalEstimate)}</strong></td></tr>`;
     }
     payHTML += `</tbody></table>`;
     payHTML += `<p style="font-size:11px;color:var(--text-light);margin-top:8px;">All figures are gross (before tax). SMP rate used: £${SMP_WEEKLY.toFixed(2)}/week (verify current rate at gov.uk). Tax, NI and pension deductions will apply.</p>`;
