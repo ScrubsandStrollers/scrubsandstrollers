@@ -1639,7 +1639,7 @@ function calculate() {
     ompBanner.innerHTML = `<div class="result-banner success"><div class="icon">✅</div><div><h3>You are likely eligible for Occupational Maternity Pay (OMP)</h3><p>You have approximately <strong>${nhsMonthsAtOmpCheck} months</strong> of continuous NHS service by the OMP eligibility date (${formatShort(ompCheckDate)}). You qualify for the full NHS maternity pay package: 8 weeks full pay, 18 weeks half pay, plus SMP.</p></div></div>`;
   } else {
     const shortBy = 12 - nhsMonthsAtOmpCheck;
-    ompBanner.innerHTML = `<div class="result-banner warning"><div class="icon">⚠️</div><div><h3>You may not yet qualify for OMP</h3><p>You have approximately <strong>${nhsMonthsAtOmpCheck} months</strong> NHS service by the eligibility date — you need 12 months. You are short by roughly <strong>${shortBy} month${shortBy !== 1 ? 's' : ''}</strong>. You may qualify for SMP only, or Maternity Allowance. Check Chapter 2 of the guide for your options.</p></div></div>`;
+    ompBanner.innerHTML = `<div class="result-banner warning"><div class="icon">⚠️</div><div><h3>You may not yet qualify for OMP</h3><p>You have approximately <strong>${nhsMonthsAtOmpCheck} months</strong> NHS service by the eligibility date — you need 12 months. You are short by roughly <strong>${shortBy} month${shortBy !== 1 ? 's' : ''}</strong>. You may qualify for SMP only, or Maternity Allowance. Check Chapter 3 of the guide for your options.</p></div></div>`;
   }
 
   // SMP Banner
@@ -1650,13 +1650,13 @@ function calculate() {
                    'Your continuous NHS service meets the threshold.';
     smpBanner.innerHTML = `<div class="result-banner info"><div class="icon">ℹ️</div><div><h3>SMP eligibility: likely met</h3><p>${reason} Your SMP will be calculated from payslips in the window <strong>${formatShort(smpCalcStart)} to ${formatShort(smpCalcEnd)}</strong>. Any supplements or pay rises in this window will increase your SMP rate.</p></div></div>`;
   } else {
-    smpBanner.innerHTML = `<div class="result-banner warning"><div class="icon">⚠️</div><div><h3>SMP: may need checking</h3><p>You have <strong>${contractWeeksAtQW} weeks</strong> with your current employer — SMP requires 26 weeks. If your deanery uses a lead employer model, tick that box above. Otherwise, NHS trainee protections may still apply — check Chapter 2 and contact the BMA.</p></div></div>`;
+    smpBanner.innerHTML = `<div class="result-banner warning"><div class="icon">⚠️</div><div><h3>SMP: may need checking</h3><p>You have <strong>${contractWeeksAtQW} weeks</strong> with your current employer — SMP requires 26 weeks. If your deanery uses a lead employer model, tick that box above. Otherwise, NHS trainee protections may still apply — check Chapter 3 and contact the BMA.</p></div></div>`;
   }
 
   // Contract warning
   const contractBanner = document.getElementById('contractBanner');
   if (contractEndsInLeave) {
-    contractBanner.innerHTML = `<div class="result-banner warning"><div class="icon">📋</div><div><h3>Your contract ends during maternity leave (${formatShort(contractEnd)})</h3><p>This does not necessarily mean you must repay OMP. Ask HR in writing: "Can return to a different NHS employer satisfy the 13-week obligation?" You do not need to return to this specific trust. See the email templates in Chapter 7.</p></div></div>`;
+    contractBanner.innerHTML = `<div class="result-banner warning"><div class="icon">📋</div><div><h3>Your contract ends during maternity leave (${formatShort(contractEnd)})</h3><p>This does not necessarily mean you must repay OMP. Ask HR in writing: "Can return to a different NHS employer satisfy the 13-week obligation?" You do not need to return to this specific trust. See the email templates in Chapter 8.</p></div></div>`;
   } else {
     contractBanner.innerHTML = '';
   }
@@ -1802,7 +1802,7 @@ function calculate() {
   actions.push({ icon: '🗓', text: `<strong>Plan your annual leave on return (${totalAL} days)</strong> — Contact the HR coordinator of your new rotation during your unpaid leave period to arrange annual leave and confirm payroll re-activation.` });
 
   if (contractEndsInLeave) {
-    actions.push({ icon: '✉️', text: `<strong>Ask HR about your fixed-term contract in writing</strong> — Use the email template in Chapter 7 to confirm whether OMP is repayable and how the 13-week return obligation works in your case.` });
+    actions.push({ icon: '✉️', text: `<strong>Ask HR about your fixed-term contract in writing</strong> — Use the email template in Chapter 8 to confirm whether OMP is repayable and how the 13-week return obligation works in your case.` });
   }
 
   actions.push({ icon: '🏥', text: `<strong>Apply for SuppoRTT if out 3+ months</strong> — Contact your deanery 12–16 weeks before return to start the supported return process.` });
