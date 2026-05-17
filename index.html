@@ -1161,7 +1161,7 @@ footer{
         <input type="checkbox" id="ltft" />
         <span class="toggle-slider"></span>
       </label>
-      <span class="toggle-label">I plan to return LTFT (Less Than Full Time)</span>
+      <span class="toggle-label">I am currently working LTFT (Less Than Full Time) <span class="sublabel">before maternity leave — this affects your annual leave accrual</span></span>
     </div>
 
     <div id="ltftField" style="display:none; margin-top:8px; margin-bottom:16px;">
@@ -1863,10 +1863,6 @@ function calculate() {
   }
 
   actions.push({ icon: '🏥', text: `<strong>Apply for SuppoRTT if out 3+ months</strong> — Contact your deanery 12–16 weeks before return to start the supported return process.` });
-
-  if (ltft) {
-    actions.push({ icon: '📝', text: `<strong>Submit your LTFT application</strong> — Apply via your deanery's PGMDE portal minimum 16 weeks before your intended LTFT start. Notify your TPD at the same time.` });
-  }
 
   document.getElementById('actionList').innerHTML = actions.map(a =>
     `<li><span class="al-icon">${a.icon}</span><span>${a.text}</span></li>`
