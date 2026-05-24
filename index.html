@@ -1630,9 +1630,11 @@ function calculate() {
   const returnDeadline = leaveStart ? addWeeks(leaveStart, 52) : null;
   const ompReturnDeadline = leaveStart ? addDays(leaveReturn || leaveEnd, 0) : null;
 
-  // OMP eligibility: 12 months NHS service by start of 11th week before EWC
+  // OMP eligibility: 12 months NHS service by start of 11th week before EWC,
+  // AND still employed at that date (contract must not end before ompCheckDate)
   const nhsMonthsAtOmpCheck = monthsBetween(nhsStart, ompCheckDate);
-  const ompEligible = nhsMonthsAtOmpCheck >= 12;
+  const contractEndedBeforeOmpCheck = contractEnd && contractEnd < ompCheckDate;
+  const ompEligible = nhsMonthsAtOmpCheck >= 12 && !contractEndedBeforeOmpCheck;
 
   // SMP eligibility: 26 weeks with current employer by qualifying week
   const contractWeeksAtQW = Math.floor(daysBetween(contractStart, qualifyingWeek) / 7);
@@ -1694,6 +1696,8 @@ function calculate() {
   const ompBanner = document.getElementById('ompBanner');
   if (ompEligible) {
     ompBanner.innerHTML = `<div class="result-banner success"><div class="icon">✅</div><div><h3>You are likely eligible for Occupational Maternity Pay (OMP)</h3><p>You have approximately <strong>${nhsMonthsAtOmpCheck} months</strong> of continuous NHS service by the OMP eligibility date (${formatShort(ompCheckDate)}). You qualify for the full NHS maternity pay package: 8 weeks full pay, 18 weeks half pay, plus SMP.</p></div></div>`;
+  } else if (contractEndedBeforeOmpCheck) {
+    ompBanner.innerHTML = `<div class="result-banner warning"><div class="icon">⚠️</div><div><h3>You may not qualify for OMP — contract ends before eligibility date</h3><p>Your contract ends on <strong>${formatShort(contractEnd)}</strong>, which is before the OMP eligibility date (<strong>${formatShort(ompCheckDate)}</strong> — 11 weeks before your EWC). OMP requires you to still be employed at that date. Contact the BMA employment helpline to explore whether NHS trainee protections or a lead employer arrangement could help. See Chapter 2 of the guide.</p></div></div>`;
   } else {
     const shortBy = 12 - nhsMonthsAtOmpCheck;
     ompBanner.innerHTML = `<div class="result-banner warning"><div class="icon">⚠️</div><div><h3>You may not yet qualify for OMP</h3><p>You have approximately <strong>${nhsMonthsAtOmpCheck} months</strong> NHS service by the eligibility date — you need 12 months. You are short by roughly <strong>${shortBy} month${shortBy !== 1 ? 's' : ''}</strong>. You may qualify for SMP only, or Maternity Allowance. Check Chapter 3 of the guide for your options.</p></div></div>`;
@@ -1956,3 +1960,4 @@ async function mcSubscribe() {
 </script>
 </body>
 </html>
+ 
