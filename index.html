@@ -752,6 +752,17 @@ nav{
 .buy-btn:hover{background:var(--terracotta-dark);transform:translateY(-1px)}
 .buy-guarantee{text-align:center;font-size:12px;color:var(--text-muted)}
 
+/* TESTIMONIALS */
+.testimonials{background:var(--cream)}
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.testi-card{
+  background:white;border:1px solid var(--border);border-radius:16px;padding:28px;
+}
+.testi-stars{color:var(--terracotta);font-size:14px;margin-bottom:12px;letter-spacing:2px}
+.testi-text{font-size:14px;color:var(--text-muted);line-height:1.7;margin-bottom:20px;font-style:italic}
+.testi-author{font-size:13px;font-weight:600;color:var(--navy)}
+.testi-role{font-size:12px;color:var(--text-muted)}
+
 /* FOOTER */
 footer{
   background:var(--navy);padding:60px 40px 40px;
@@ -799,6 +810,47 @@ footer{
   .footer-top{flex-direction:column;gap:24px}
   .footer-links{flex-wrap:wrap;gap:16px}
 }
+
+/* ══ SURVEY PAGE ══ */
+.sv-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 22px 24px;
+  margin-bottom: 14px;
+  transition: border-color 0.15s;
+}
+.sv-card.sv-answered { border-color: var(--terracotta); }
+.sv-qrow { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 14px; }
+.sv-qnum {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--terracotta-light); color: var(--terracotta);
+  font-size: 13px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.sv-qtext { font-size: 15px; font-weight: 600; color: var(--navy); line-height: 1.4; }
+.sv-qsub { font-size: 13px; color: var(--text-muted); margin-top: 4px; line-height: 1.4; }
+.sv-scale {
+  display: flex; gap: 8px; padding-left: 42px; flex-wrap: wrap;
+}
+.sv-scale button {
+  width: 44px; height: 44px; border-radius: 10px;
+  border: 1.5px solid var(--border);
+  background: transparent; color: var(--text-muted);
+  font-family: inherit; font-size: 16px; font-weight: 600;
+  cursor: pointer; transition: all 0.12s;
+}
+.sv-scale button:hover { border-color: var(--terracotta); color: var(--terracotta); }
+.sv-scale button.sv-sel { background: var(--terracotta); border-color: var(--terracotta); color: white; }
+.sv-options { display: flex; flex-direction: column; gap: 8px; padding-left: 42px; }
+.sv-options button {
+  text-align: left; padding: 10px 14px; border-radius: 8px;
+  border: 1.5px solid var(--border); background: transparent;
+  color: var(--text); font-family: inherit; font-size: 14px;
+  cursor: pointer; transition: all 0.12s; line-height: 1.4;
+}
+.sv-options button:hover { border-color: var(--terracotta); color: var(--terracotta); }
+.sv-options button.sv-sel { border-color: var(--terracotta); background: var(--terracotta-light); color: var(--terracotta-dark); font-weight: 600; }
 </style>
 </head>
 <body>
@@ -808,10 +860,10 @@ footer{
   <a href="#" class="nav-brand" onclick="showPage('home')">Scrubs <span>&</span> Strollers</a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')">Home</a></li>
-    <li><a href="#" onclick="showPage('calculator')">Free Calculator</a></li>
+    <li><a href="#" onclick="showPage('calculator')">Calculator</a></li>
+    <li><a href="#" onclick="showPage('survey')">QIP Survey</a></li>
     <li><a href="#" onclick="showPage('about')">About</a></li>
     <li><a href="#" onclick="showPage('links')">My Favourites</a></li>
-    <li><a href="#" onclick="showPage('buy')" class="nav-cta">Get the Book — £14.99</a></li>
   </ul>
   <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">
     <span></span><span></span><span></span>
@@ -819,10 +871,10 @@ footer{
 </nav>
 <div class="mobile-menu" id="mobileMenu">
   <a href="#" onclick="showPage('home');toggleMenu()">Home</a>
-  <a href="#" onclick="showPage('calculator');toggleMenu()">Free Calculator</a>
+  <a href="#" onclick="showPage('calculator');toggleMenu()">Calculator</a>
+  <a href="#" onclick="showPage('survey');toggleMenu()">QIP Survey</a>
   <a href="#" onclick="showPage('about');toggleMenu()">About</a>
   <a href="#" onclick="showPage('links');toggleMenu()">My Favourites</a>
-  <a href="#" onclick="showPage('buy');toggleMenu()">Get the Book — £14.99</a>
 </div>
 
 <!-- ══════════════ HOME PAGE ══════════════ -->
@@ -832,12 +884,12 @@ footer{
   <section class="hero">
     <div class="hero-inner">
       <div>
-        <div class="hero-badge">🩺 Written by an NHS Doctor</div>
-        <h1 class="fade-up">Know your rights.<br><em>Keep your money.</em></h1>
-        <p class="hero-sub fade-up">The definitive maternity pay guide for NHS resident doctors. Stop leaving thousands of pounds on the table.</p>
+        <div class="hero-badge">🩺 Free Resource — NHS Doctors</div>
+        <h1 class="fade-up">Know your rights.<br><em>Before you need to.</em></h1>
+        <p class="hero-sub fade-up">A free maternity pay resource for all NHS resident doctors — whether you're planning a family now or just want to know where you stand.</p>
         <div class="hero-actions fade-up">
-          <a href="#" class="btn-primary" onclick="showPage('buy')">Get the Book — £14.99 <span>→</span></a>
-          <a href="#" class="btn-secondary" onclick="showPage('calculator')">Free Calculator</a>
+          <a href="#" class="btn-primary" onclick="showPage('calculator')">Use the Free Calculator <span>→</span></a>
+          <a href="#" class="btn-secondary" onclick="showPage('survey')">QIP Survey</a>
         </div>
         <div class="hero-proof fade-up">
           <div class="proof-stat">
@@ -845,36 +897,71 @@ footer{
             <div class="proof-label">difference between OMP and SMP</div>
           </div>
           <div class="proof-stat">
-            <div class="proof-num">14</div>
-            <div class="proof-label">chapters of expert guidance</div>
+            <div class="proof-num">Free</div>
+            <div class="proof-label">interactive pay calculator</div>
           </div>
           <div class="proof-stat">
-            <div class="proof-num">Free</div>
-            <div class="proof-label">interactive pay calculator included</div>
+            <div class="proof-num">2026</div>
+            <div class="proof-label">rates and figures</div>
           </div>
         </div>
       </div>
       <div class="book-visual fade-up">
         <div class="book-card">
-          <div class="book-badge">Launch Price</div>
+          <div class="book-badge">Free Resource</div>
           <div class="book-title">The NHS Doctor's<br><span>Maternity Pay Handbook</span></div>
-          <div class="book-subtitle">Rotations, Contracts & Return-to-Work Explained</div>
+          <div class="book-subtitle">Rotations, Contracts &amp; Return-to-Work Explained</div>
           <div class="book-author-row">
             <div class="book-avatar"></div>
             <div>
               <div class="book-author-name">Dr. Naomi Cave-Browne-Cave</div>
-              <div class="book-author-role">FY2 Doctor & Mother of Twins</div>
+              <div class="book-author-role">FY2 Doctor &amp; Mother of Twins</div>
             </div>
           </div>
           <div class="book-price-row">
             <div>
-              <div class="book-price-was">Usually £24.99</div>
-              <div class="book-price">£14.99 <span class="launch-ribbon">Launch</span></div>
-              <div class="book-price-label">Limited time</div>
+              <div class="book-price" style="font-size:22px;color:var(--terracotta-dark)">Free to access</div>
+              <div class="book-price-label">No sign-up required</div>
             </div>
           </div>
-          <a href="#" class="book-buy-btn" onclick="showPage('buy')">Get Instant Access →</a>
+          <a href="#" class="book-buy-btn" onclick="showPage('calculator')">Open Calculator →</a>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW TO USE THIS RESOURCE -->
+  <section class="section" style="background:white">
+    <div class="section-inner">
+      <div class="section-label">How It Works</div>
+      <h2>Three steps. Five minutes.</h2>
+      <p class="section-lead">This site is part of a Quality Improvement Project on maternity pay literacy among NHS doctors. Here's how to get involved.</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px;margin-top:40px">
+
+        <div style="background:var(--cream);border-radius:16px;padding:32px 28px;border:1px solid var(--border);text-align:center">
+          <div style="width:52px;height:52px;background:var(--terracotta);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;margin:0 auto 20px;font-family:'Playfair Display',serif">1</div>
+          <h3 style="font-family:'Playfair Display',serif;font-size:18px;color:var(--navy);margin-bottom:10px">Take the pre-session survey</h3>
+          <p style="color:var(--text-muted);font-size:14px;line-height:1.6;margin-bottom:20px">2 minutes. Anonymous. Helps us understand awareness levels before you explore the resource.</p>
+          <a href="#" onclick="showPage('survey')" style="display:inline-block;background:var(--terracotta);color:white;text-decoration:none;padding:10px 22px;border-radius:100px;font-size:13px;font-weight:600">PRE Survey →</a>
+        </div>
+
+        <div style="background:var(--cream);border-radius:16px;padding:32px 28px;border:1px solid var(--border);text-align:center">
+          <div style="width:52px;height:52px;background:var(--terracotta);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;margin:0 auto 20px;font-family:'Playfair Display',serif">2</div>
+          <h3 style="font-family:'Playfair Display',serif;font-size:18px;color:var(--navy);margin-bottom:10px">Read the guide and use the calculator</h3>
+          <p style="color:var(--text-muted);font-size:14px;line-height:1.6;margin-bottom:20px">Try the interactive calculator with your own dates and salary, and read the free PDF guide.</p>
+          <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+            <a href="#" onclick="showPage('calculator')" style="display:inline-block;background:var(--terracotta);color:white;text-decoration:none;padding:10px 18px;border-radius:100px;font-size:13px;font-weight:600">Calculator →</a>
+            <a href="nhs_maternity_handbook_v3.html" target="_blank" style="display:inline-block;background:transparent;color:var(--terracotta);text-decoration:none;padding:10px 18px;border-radius:100px;font-size:13px;font-weight:600;border:1.5px solid var(--terracotta)">Read PDF →</a>
+          </div>
+        </div>
+
+        <div style="background:var(--cream);border-radius:16px;padding:32px 28px;border:1px solid var(--border);text-align:center">
+          <div style="width:52px;height:52px;background:var(--terracotta);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;margin:0 auto 20px;font-family:'Playfair Display',serif">3</div>
+          <h3 style="font-family:'Playfair Display',serif;font-size:18px;color:var(--navy);margin-bottom:10px">Take the post-session survey</h3>
+          <p style="color:var(--text-muted);font-size:14px;line-height:1.6;margin-bottom:20px">Tell us what changed. Your responses directly shape this QIP and help other NHS doctors.</p>
+          <a href="#" onclick="showPage('survey')" style="display:inline-block;background:var(--terracotta);color:white;text-decoration:none;padding:10px 22px;border-radius:100px;font-size:13px;font-weight:600">POST Survey →</a>
+        </div>
+
       </div>
     </div>
   </section>
@@ -889,7 +976,7 @@ footer{
         <div class="problem-card">
           <div class="problem-icon">💸</div>
           <h3>Missing OMP entirely</h3>
-          <p>Missing one qualifying date or misunderstanding continuous service can drop you from £18,700 OMP to £10,000 SMP — a difference of nearly £8,000.</p>
+          <p>Missing one qualifying date or misunderstanding continuous service can drop you from full OMP to SMP only — a difference of up to £8,000 on the minimum doctor salary, and more at higher grades.</p>
         </div>
         <div class="problem-card">
           <div class="problem-icon">🔄</div>
@@ -910,22 +997,22 @@ footer{
     <div class="section-inner">
       <div class="section-label">The Stakes</div>
       <h2>What you actually stand to lose</h2>
-      <p class="section-lead">Based on a foundation/core trainee salary of £38,831 with 2026 SMP rate of £194.32/week.</p>
+      <p class="section-lead">Based on the minimum full-time doctor salary of £41,226 (F1, 2026) with SMP rate of £194.32/week. Your actual difference could be higher.</p>
       <div class="pay-grid">
         <div class="pay-card bad">
           <h3>❌ SMP only (OMP missed)</h3>
-          <div class="pay-row"><span>Weeks 1–6</span><span>~£671/week (90%)</span></div>
+          <div class="pay-row"><span>Weeks 1–6</span><span>~£713/week (90%)</span></div>
           <div class="pay-row"><span>Weeks 7–39</span><span>£194.32/week</span></div>
           <div class="pay-row"><span>Weeks 40–52</span><span>Unpaid</span></div>
           <div class="pay-total">
             <span class="pay-total-label">Total (52 weeks)</span>
-            <span class="pay-total-amount">~£10,500</span>
+            <span class="pay-total-amount">~£10,600</span>
           </div>
         </div>
         <div class="pay-card good">
           <h3>✅ Full OMP + SMP</h3>
-          <div class="pay-row"><span>Weeks 1–8</span><span>£746/week (full pay)</span></div>
-          <div class="pay-row"><span>Weeks 9–26</span><span>£567/week (half + SMP)</span></div>
+          <div class="pay-row"><span>Weeks 1–8</span><span>£793/week (full pay)</span></div>
+          <div class="pay-row"><span>Weeks 9–26</span><span>£591/week (half + SMP)</span></div>
           <div class="pay-row"><span>Weeks 27–39</span><span>£194.32/week</span></div>
           <div class="pay-row"><span>Weeks 40–52</span><span>Unpaid</span></div>
           <div class="pay-total">
@@ -936,7 +1023,7 @@ footer{
       </div>
       <div class="saving-callout">
         <div class="saving-callout-icon">💡</div>
-        <p>The difference is <strong>~£8,000</strong> — and it is entirely avoidable with the right information. This guide costs £14.99. The maths speaks for itself.</p>
+        <p>The difference is <strong>up to £8,000</strong> — and it is entirely avoidable with the right information. The calculator and guidance on this site are free.</p>
       </div>
     </div>
   </section>
@@ -969,11 +1056,11 @@ footer{
   <!-- CTA -->
   <section style="background:var(--terracotta-light);padding:80px 40px;text-align:center">
     <div style="max-width:560px;margin:0 auto">
-      <div class="section-label" style="text-align:center">Limited Launch Price</div>
-      <h2 style="font-family:'Playfair Display',serif;font-size:40px;color:var(--navy);margin-bottom:16px;letter-spacing:-0.5px">£14.99 while it lasts.</h2>
-      <p style="color:var(--text-muted);font-size:17px;margin-bottom:32px;line-height:1.6">Price rises to £24.99 soon. Get instant access to the handbook, the interactive calculator, and all future updates.</p>
-      <a href="#" class="btn-primary" onclick="showPage('buy')" style="font-size:16px;padding:16px 36px">Get Instant Access →</a>
-      <p style="font-size:12px;color:var(--text-muted);margin-top:16px">Delivered instantly as PDF + HTML. Includes the interactive calculator.</p>
+      <div class="section-label" style="text-align:center">Free Resource</div>
+      <h2 style="font-family:'Playfair Display',serif;font-size:40px;color:var(--navy);margin-bottom:16px;letter-spacing:-0.5px">Know before you need it.</h2>
+      <p style="color:var(--text-muted);font-size:17px;margin-bottom:32px;line-height:1.6">Use the free interactive calculator to understand your entitlements now — whether you're planning ahead or already pregnant.</p>
+      <a href="#" class="btn-primary" onclick="showPage('calculator')" style="font-size:16px;padding:16px 36px">Open Calculator →</a>
+      <p style="font-size:12px;color:var(--text-muted);margin-top:16px">Free. No sign-up. Works on mobile.</p>
     </div>
   </section>
 
@@ -1181,8 +1268,8 @@ footer{
 </div>
     </div>
     <div style="background:white;border-top:1px solid var(--border);padding:48px 40px;text-align:center">
-      <p style="color:var(--text-muted);margin-bottom:20px;font-size:16px">Want the full guide with email templates, checklists, and real-life scenarios?</p>
-      <a href="#" class="btn-primary" onclick="showPage('buy')">Get the Handbook for £14.99 →</a>
+      <p style="color:var(--text-muted);margin-bottom:20px;font-size:16px">Participating in the QIP? Complete the pre or post session survey below.</p>
+      <a href="#" class="btn-primary" onclick="showPage('survey')">Open QIP Survey →</a>
     </div>
   </div>
 </div>
@@ -1208,7 +1295,7 @@ footer{
               <div class="credential"><div class="credential-dot"></div><p><strong>Founder of Scrubs & Strollers</strong> — the maternity resource for NHS doctors</p></div>
             </div>
             <div style="margin-top:32px">
-              <a href="#" class="btn-primary" onclick="showPage('buy')">Get the Handbook →</a>
+              <a href="#" class="btn-primary" onclick="showPage('calculator')">Use the Calculator →</a>
             </div>
           </div>
         </div>
@@ -1217,71 +1304,139 @@ footer{
   </div>
 </div>
 
-<!-- ══════════════ BUY PAGE ══════════════ -->
-<div id="page-buy" class="page">
-  <div style="padding-top:64px">
-    <section class="buy-section">
-      <div class="buy-inner">
-        <div class="section-label" style="text-align:center;color:var(--terracotta-mid)">Get Instant Access</div>
-        <h2>The NHS Doctor's<br>Maternity Pay Handbook</h2>
-        <p>Everything you need to know about maternity pay, rights, and returning to work — written by a doctor who lived it.</p>
-        <div class="buy-card">
-          <div class="buy-card-header">
-            <div class="buy-card-title">
-              The NHS Doctor's Maternity Pay Handbook
-              <span>By Dr. Naomi Cave-Browne-Cave · Version 2, 2026</span>
-            </div>
-            <div class="price-block">
-              <div class="price-was">£24.99</div>
-              <div class="price-now">£14.99</div>
-              <div class="price-note">Launch price · Limited time</div>
-            </div>
-          </div>
-          <div class="buy-features">
-            <div class="buy-feature">14 comprehensive chapters</div>
-            <div class="buy-feature">Interactive pay calculator</div>
-            <div class="buy-feature">Printable checklists</div>
-            <div class="buy-feature">Copy-paste HR email templates</div>
-            <div class="buy-feature">Real-life scenarios</div>
-            <div class="buy-feature">2026 figures and rates</div>
-            <div class="buy-feature">PDF + HTML versions</div>
-            <div class="buy-feature">Free future updates</div>
-          </div>
-          <button onclick="startCheckout()" class="buy-btn" id="checkout-btn">Buy Now for £14.99 →</button>
-          <p class="buy-guarantee">🔒 Secure checkout via Stripe · Instant access by email · VAT included</p>
-          <p style="font-size:12px;color:var(--text-muted);margin-top:8px;">After purchase you will receive your PDF by email, plus a password to access the interactive HTML version with the live calculator at <strong>scrubsandstrollers.co.uk/handbook</strong></p>
-        </div>
-      </div>
-    </section>
+<!-- ══════════════ SURVEY PAGE ══════════════ -->
+<div id="page-survey" class="page">
+  <div style="padding-top:64px;background:var(--cream);min-height:100vh">
+    <div style="max-width:720px;margin:0 auto;padding:60px 24px 80px">
 
-    <!-- FAQ strip -->
-    <section style="background:var(--cream);padding:80px 40px">
-      <div style="max-width:640px;margin:0 auto">
-        <h2 style="font-family:'Playfair Display',serif;font-size:32px;color:var(--navy);margin-bottom:40px;text-align:center">Common questions</h2>
-        <div style="display:flex;flex-direction:column;gap:20px">
-          <div style="border-bottom:1px solid var(--border);padding-bottom:20px">
-            <strong style="color:var(--navy)">What format does it come in?</strong>
-            <p style="color:var(--text-muted);margin-top:8px;font-size:14px;line-height:1.6">You receive both a PDF (for printing and reading offline) and an HTML file (which includes the fully interactive maternity pay calculator).</p>
-          </div>
-          <div style="border-bottom:1px solid var(--border);padding-bottom:20px">
-            <strong style="color:var(--navy)">Is it relevant to my grade and deanery?</strong>
-            <p style="color:var(--text-muted);margin-top:8px;font-size:14px;line-height:1.6">It is primarily written for NHS resident doctors in England on the 2016 Terms and Conditions, though the majority is relevant across grades. Some processes differ in Scotland, Wales, and Northern Ireland.</p>
-          </div>
-          <div style="border-bottom:1px solid var(--border);padding-bottom:20px">
-            <strong style="color:var(--navy)">Will the price really go up?</strong>
-            <p style="color:var(--text-muted);margin-top:8px;font-size:14px;line-height:1.6">Yes. The launch price of £14.99 is for a limited time to gather early reviews. It will move to £24.99 shortly. Buy now to lock in the lower price.</p>
-          </div>
-          <div style="border-bottom:1px solid var(--border);padding-bottom:20px">
-            <strong style="color:var(--navy)">Is this legal or financial advice?</strong>
-            <p style="color:var(--text-muted);margin-top:8px;font-size:14px;line-height:1.6">No. This guide is for informational purposes only and does not constitute legal, financial, or professional HR advice. Always verify entitlements with your HR department, deanery, and the BMA.</p>
+      <div class="section-label">QIP — Know Before You Need It</div>
+      <h2 style="font-family:'Playfair Display',serif;font-size:38px;color:var(--navy);margin-bottom:12px;letter-spacing:-0.5px">Maternity Pay Awareness Survey</h2>
+      <p style="color:var(--text-muted);font-size:16px;margin-bottom:32px;max-width:560px;line-height:1.6">Part of a Quality Improvement Project on maternity pay literacy among NHS doctors. Takes 2–3 minutes. Anonymous. For all doctors, whether or not you are currently planning a family.</p>
+
+      <!-- Version toggle -->
+      <div style="display:flex;gap:0;border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:32px;max-width:320px;background:white">
+        <button id="sv-tab-pre" onclick="setSurveyVersion('pre')" style="flex:1;padding:10px 16px;background:var(--terracotta);color:white;border:none;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;transition:background 0.15s">PRE Session</button>
+        <button id="sv-tab-post" onclick="setSurveyVersion('post')" style="flex:1;padding:10px 16px;background:transparent;color:var(--text-muted);border:none;font-family:inherit;font-size:14px;font-weight:500;cursor:pointer;border-left:1px solid var(--border);transition:all 0.15s">POST Session</button>
+      </div>
+      <p id="sv-version-note" style="font-size:13px;color:var(--terracotta);margin-bottom:28px;font-weight:500">You are completing the PRE-session survey.</p>
+
+      <!-- About You -->
+      <div style="background:white;border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:16px">
+        <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:16px">About You</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+          <div>
+            <label style="display:block;font-size:12px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px" for="sv-grade">Grade</label>
+            <input id="sv-grade" type="text" placeholder="e.g. FY2, ST3, Consultant" style="width:100%;border:none;border-bottom:1.5px solid var(--border);background:transparent;font-family:inherit;font-size:14px;padding:6px 2px;color:var(--text);outline:none">
           </div>
           <div>
-            <strong style="color:var(--navy)">Do I get updates?</strong>
-            <p style="color:var(--text-muted);margin-top:8px;font-size:14px;line-height:1.6">Yes. SMP rates are updated each April. When figures change, buyers receive the updated version at no extra cost.</p>
+            <label style="display:block;font-size:12px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px" for="sv-specialty">Specialty</label>
+            <input id="sv-specialty" type="text" placeholder="e.g. Medicine, O&amp;G, GP" style="width:100%;border:none;border-bottom:1.5px solid var(--border);background:transparent;font-family:inherit;font-size:14px;padding:6px 2px;color:var(--text);outline:none">
           </div>
         </div>
       </div>
-    </section>
+
+      <!-- Q1 -->
+      <div class="sv-card" id="sv-qc1">
+        <div class="sv-qrow">
+          <div class="sv-qnum">1</div>
+          <div>
+            <div class="sv-qtext">How confident are you in explaining the difference between Occupational Maternity Pay (OMP) and Statutory Maternity Pay (SMP)?</div>
+            <div class="sv-qsub">OMP is the NHS-specific enhanced scheme; SMP is the statutory minimum.</div>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:0 0 4px 40px;font-size:11px;color:var(--text-muted)"><span>1 — Not at all</span><span>5 — Very confident</span></div>
+        <div class="sv-scale" id="sv-q1"></div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="sv-card" id="sv-qc2">
+        <div class="sv-qrow">
+          <div class="sv-qnum">2</div>
+          <div class="sv-qtext">How well do you understand the qualifying criteria for NHS OMP — including the role of the "qualifying week" and continuous service requirements?</div>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:0 0 4px 40px;font-size:11px;color:var(--text-muted)"><span>1 — Not at all</span><span>5 — Fully understand</span></div>
+        <div class="sv-scale" id="sv-q2"></div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="sv-card" id="sv-qc3">
+        <div class="sv-qrow">
+          <div class="sv-qnum">3</div>
+          <div class="sv-qtext">Are you aware of how rotating between NHS trusts can affect your maternity pay entitlement?</div>
+        </div>
+        <div class="sv-options" id="sv-q3"></div>
+      </div>
+
+      <!-- Q4 -->
+      <div class="sv-card" id="sv-qc4">
+        <div class="sv-qrow">
+          <div class="sv-qnum">4</div>
+          <div class="sv-qtext">Has uncertainty about maternity pay entitlements ever influenced a career or timing decision for you, or do you think it might in future?</div>
+        </div>
+        <div class="sv-options" id="sv-q4"></div>
+      </div>
+
+      <!-- Q5 -->
+      <div class="sv-card" id="sv-qc5">
+        <div class="sv-qrow">
+          <div class="sv-qnum">5</div>
+          <div>
+            <div class="sv-qtext">Thinking about the next 5 years of your career, how useful would a clear, practical resource on NHS maternity pay be to you?</div>
+            <div class="sv-qsub" id="sv-q5sub">Rate how useful — regardless of whether a pregnancy is currently planned.</div>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:0 0 4px 40px;font-size:11px;color:var(--text-muted)"><span>1 — Not useful</span><span>5 — Very useful</span></div>
+        <div class="sv-scale" id="sv-q5"></div>
+      </div>
+
+      <!-- POST only -->
+      <div id="sv-post-section" hidden>
+        <div class="sv-card" id="sv-qc6">
+          <div class="sv-qrow">
+            <div class="sv-qnum">6</div>
+            <div class="sv-qtext">After today's session, how confident do you now feel about understanding your NHS maternity pay rights?</div>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:0 0 4px 40px;font-size:11px;color:var(--text-muted)"><span>1 — Still unclear</span><span>5 — Confident</span></div>
+          <div class="sv-scale" id="sv-q6"></div>
+        </div>
+        <div class="sv-card" id="sv-qc7">
+          <div class="sv-qrow">
+            <div class="sv-qnum">7</div>
+            <div class="sv-qtext">How likely are you to use or recommend the Scrubs &amp; Strollers maternity pay calculator?</div>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:0 0 4px 40px;font-size:11px;color:var(--text-muted)"><span>1 — Unlikely</span><span>5 — Very likely</span></div>
+          <div class="sv-scale" id="sv-q7"></div>
+        </div>
+        <div class="sv-card">
+          <div class="sv-qrow">
+            <div class="sv-qnum">8</div>
+            <div class="sv-qtext">Any comments about today's session, or anything you'd like to see covered?</div>
+          </div>
+          <div style="padding-left:40px">
+            <textarea id="sv-q8" placeholder="Optional — your feedback helps improve the resource…" style="width:100%;min-height:80px;border:1.5px solid var(--border);border-radius:8px;background:var(--cream);color:var(--text);font-family:inherit;font-size:14px;padding:10px 12px;resize:vertical;outline:none;line-height:1.5"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Progress + Submit -->
+      <div style="text-align:center;margin-top:8px" id="sv-submit-area">
+        <div style="height:4px;background:var(--border);border-radius:2px;overflow:hidden;width:100%;max-width:300px;margin:0 auto 10px">
+          <div id="sv-progress-fill" style="height:100%;background:var(--terracotta);border-radius:2px;transition:width 0.3s;width:0%"></div>
+        </div>
+        <div id="sv-progress-text" style="font-size:13px;color:var(--text-muted);margin-bottom:16px">0 of 5 answered</div>
+        <button onclick="svSubmit()" style="background:var(--terracotta);color:white;border:none;border-radius:8px;padding:14px 40px;font-family:inherit;font-size:15px;font-weight:600;cursor:pointer;letter-spacing:0.02em">Submit Survey</button>
+      </div>
+
+      <!-- Copy results panel (shown after submit) -->
+      <div id="sv-results-panel" hidden style="background:white;border:1px solid var(--border);border-radius:12px;padding:28px;margin-top:8px">
+        <div style="font-size:18px;font-weight:700;color:var(--navy);margin-bottom:8px">Thank you!</div>
+        <p style="color:var(--text-muted);font-size:14px;margin-bottom:20px">Copy the results below and paste them into your QIP spreadsheet, or email to hello@scrubsandstrollers.com.</p>
+        <textarea id="sv-results-text" readonly style="width:100%;min-height:220px;border:1.5px solid var(--border);border-radius:8px;background:var(--cream);font-family:monospace;font-size:12px;padding:12px;color:var(--text);resize:vertical;line-height:1.6"></textarea>
+        <button onclick="svCopyResults()" id="sv-copy-btn" style="margin-top:12px;background:var(--terracotta);color:white;border:none;border-radius:8px;padding:10px 28px;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer">Copy to Clipboard</button>
+        <button onclick="svReset()" style="margin-top:12px;margin-left:10px;background:transparent;color:var(--terracotta);border:1.5px solid var(--terracotta);border-radius:8px;padding:10px 24px;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer">New Response</button>
+      </div>
+
+    </div>
   </div>
 </div>
 
@@ -1434,6 +1589,9 @@ footer{
 </div>
 
 
+
+
+
 <!-- FOOTER -->
 <footer>
   <div class="footer-inner">
@@ -1445,14 +1603,14 @@ footer{
       <div class="footer-links">
         <a href="#" onclick="showPage('home')">Home</a>
         <a href="#" onclick="showPage('calculator')">Calculator</a>
+        <a href="#" onclick="showPage('survey')">QIP Survey</a>
         <a href="#" onclick="showPage('about')">About</a>
         <a href="#" onclick="showPage('links')">My Favourites</a>
-        <a href="#" onclick="showPage('buy')">Buy</a>
       </div>
     </div>
     <div class="footer-bottom">
       <span>© 2026 Scrubs & Strollers · Dr. Naomi Cave-Browne-Cave</span>
-      <span>scrubsandstrollers.co.uk</span>
+      <span>scrubsandstrollers.com</span>
     </div>
     <p class="footer-disclaimer">This website and its products are for informational purposes only and do not constitute legal, financial, or professional HR advice. Always verify entitlements with your HR department, deanery, and the BMA before making decisions. Figures quoted were correct at time of writing.</p>
   </div>
@@ -1461,7 +1619,7 @@ footer{
 <script>
 
 // Current SMP weekly rate (April 2025 rate - update annually)
-const SMP_WEEKLY = 187.18;
+const SMP_WEEKLY = 194.32;
 
 document.getElementById('ltft').addEventListener('change', function() {
   document.getElementById('ltftField').style.display = this.checked ? 'block' : 'none';
@@ -1822,25 +1980,13 @@ function calculate() {
 }
 
 
-async function startCheckout() {
-  const btn = document.getElementById('checkout-btn');
-  btn.textContent = 'Loading...';
-  btn.disabled = true;
-  try {
-    const res = await fetch('/.netlify/functions/create-checkout', { method: 'POST' });
-    const data = await res.json();
-    if (data.url) {
-      window.location.href = data.url;
-    } else {
-      alert('Something went wrong. Please try again.');
-      btn.textContent = 'Buy Now for £14.99 →';
-      btn.disabled = false;
-    }
-  } catch (e) {
-    alert('Something went wrong. Please try again.');
-    btn.textContent = 'Buy Now for £14.99 →';
-    btn.disabled = false;
-  }
+function handleSignup(e) {
+  // If using Mailchimp, the form opens in a new tab (target="_blank")
+  // Show a success message after a short delay
+  setTimeout(function() {
+    document.getElementById("signup-success").style.display = "block";
+    document.getElementById("signup-form").style.display = "none";
+  }, 800);
 }
 
 function showPage(name) {
@@ -1853,6 +1999,196 @@ function toggleMenu() {
   const m = document.getElementById('mobileMenu');
   m.classList.toggle('open');
 }
+
+/* ══ SURVEY LOGIC ══ */
+const SV = {
+  version: 'pre',
+  answers: { pre: {}, post: {} },
+  q3opts: [
+    "Yes — I understand this well",
+    "I've heard about it but I'm not sure of the details",
+    "No — I wasn't aware this could be an issue",
+    "Not applicable to me (I'm not on a rotation)"
+  ],
+  q4opts: [
+    "Yes — it has already influenced a decision",
+    "Possibly — I think it could affect future decisions",
+    "No — I haven't thought about it in those terms",
+    "Not applicable / I don't plan to have children"
+  ]
+};
+
+function setSurveyVersion(v) {
+  SV.version = v;
+  document.getElementById('sv-tab-pre').style.background = v==='pre' ? 'var(--terracotta)' : 'transparent';
+  document.getElementById('sv-tab-pre').style.color = v==='pre' ? 'white' : 'var(--text-muted)';
+  document.getElementById('sv-tab-post').style.background = v==='post' ? 'var(--terracotta)' : 'transparent';
+  document.getElementById('sv-tab-post').style.color = v==='post' ? 'white' : 'var(--text-muted)';
+  document.getElementById('sv-version-note').textContent = v==='pre'
+    ? 'You are completing the PRE-session survey.'
+    : 'You are completing the POST-session survey.';
+  document.getElementById('sv-post-section').hidden = (v==='pre');
+  svUpdateProgress();
+  svRestoreAnswers();
+}
+
+function svBuildScales() {
+  [1,2,5,6,7].forEach(function(n) {
+    var el = document.getElementById('sv-q'+n);
+    if (!el) return;
+    el.innerHTML = '';
+    for (var i=1; i<=5; i++) {
+      (function(val){
+        var btn = document.createElement('button');
+        btn.textContent = val;
+        btn.onclick = function(){ svAnswerScale(n, val); };
+        el.appendChild(btn);
+      })(i);
+    }
+  });
+  ['q3','q4'].forEach(function(qid, idx) {
+    var el = document.getElementById('sv-'+qid);
+    if (!el) return;
+    el.innerHTML = '';
+    var opts = idx===0 ? SV.q3opts : SV.q4opts;
+    opts.forEach(function(txt, i) {
+      var btn = document.createElement('button');
+      btn.textContent = txt;
+      var qnum = parseInt(qid.replace('q',''));
+      btn.onclick = (function(q,k){ return function(){ svAnswerOption(q,k); }; })(qnum, i);
+      el.appendChild(btn);
+    });
+  });
+}
+
+function svAnswerScale(qnum, val) {
+  SV.answers[SV.version]['q'+qnum] = val;
+  var container = document.getElementById('sv-q'+qnum);
+  container.querySelectorAll('button').forEach(function(b,i){ b.classList.toggle('sv-sel', i+1===val); });
+  var card = document.getElementById('sv-qc'+qnum);
+  if (card) card.classList.add('sv-answered');
+  svUpdateProgress();
+}
+
+function svAnswerOption(qnum, idx) {
+  SV.answers[SV.version]['q'+qnum] = idx;
+  var container = document.getElementById('sv-q'+qnum);
+  container.querySelectorAll('button').forEach(function(b,i){ b.classList.toggle('sv-sel', i===idx); });
+  var card = document.getElementById('sv-qc'+qnum);
+  if (card) card.classList.add('sv-answered');
+  svUpdateProgress();
+}
+
+function svRestoreAnswers() {
+  var ans = SV.answers[SV.version];
+  [1,2,5,6,7].forEach(function(n) {
+    if (ans['q'+n] != null) {
+      var c = document.getElementById('sv-q'+n);
+      if (c) c.querySelectorAll('button').forEach(function(b,i){ b.classList.toggle('sv-sel', i+1===ans['q'+n]); });
+      var card = document.getElementById('sv-qc'+n);
+      if (card && ans['q'+n]) card.classList.add('sv-answered');
+    }
+  });
+  [3,4].forEach(function(n) {
+    if (ans['q'+n] != null) {
+      var c = document.getElementById('sv-q'+n);
+      if (c) c.querySelectorAll('button').forEach(function(b,i){ b.classList.toggle('sv-sel', i===ans['q'+n]); });
+      var card = document.getElementById('sv-qc'+n);
+      if (card) card.classList.add('sv-answered');
+    }
+  });
+}
+
+function svUpdateProgress() {
+  var v = SV.version;
+  var required = v==='pre' ? [1,2,3,4,5] : [1,2,3,4,5,6,7];
+  var answered = required.filter(function(n){ return SV.answers[v]['q'+n] != null; }).length;
+  var pct = Math.round(answered / required.length * 100);
+  var fill = document.getElementById('sv-progress-fill');
+  var txt = document.getElementById('sv-progress-text');
+  if (fill) fill.style.width = pct+'%';
+  if (txt) txt.textContent = answered+' of '+required.length+' answered';
+}
+
+function svSubmit() {
+  var v = SV.version;
+  var required = v==='pre' ? [1,2,3,4,5] : [1,2,3,4,5,6,7];
+  var missing = required.filter(function(n){ return SV.answers[v]['q'+n] == null; });
+  if (missing.length) {
+    alert('Please answer question'+(missing.length>1?'s ':' ')+missing.map(function(n){ return 'Q'+n; }).join(', ')+' before submitting.');
+    var card = document.getElementById('sv-qc'+missing[0]);
+    if (card) card.scrollIntoView({behavior:'smooth', block:'center'});
+    return;
+  }
+  var ans = SV.answers[v];
+  var now = new Date().toLocaleString('en-GB');
+  var grade = document.getElementById('sv-grade').value.trim() || '—';
+  var spec  = document.getElementById('sv-specialty').value.trim() || '—';
+  var q8el = document.getElementById('sv-q8');
+  var q8val = q8el ? q8el.value.trim() : '';
+
+  var txt = 'QIP SURVEY RESPONSE — '+v.toUpperCase()+'-SESSION\n';
+  txt += 'Submitted: '+now+'\n';
+  txt += 'Grade: '+grade+'  |  Specialty: '+spec+'\n';
+  txt += '─────────────────────────────────────────\n';
+  txt += 'Q1 OMP/SMP confidence:            '+ans.q1+'/5\n';
+  txt += 'Q2 Qualifying criteria knowledge: '+ans.q2+'/5\n';
+  txt += 'Q3 Trust rotation awareness:      '+SV.q3opts[ans.q3]+'\n';
+  txt += 'Q4 Career decision influence:     '+SV.q4opts[ans.q4]+'\n';
+  txt += 'Q5 Resource usefulness:           '+ans.q5+'/5\n';
+  if (v==='post') {
+    txt += 'Q6 Post-session confidence:       '+ans.q6+'/5\n';
+    txt += 'Q7 Likelihood to recommend:       '+ans.q7+'/5\n';
+    txt += 'Q8 Comments: '+(q8val||'(none)')+'\n';
+  }
+  txt += '─────────────────────────────────────────\n';
+  txt += 'For: hello@scrubsandstrollers.com\n';
+
+  document.getElementById('sv-results-text').value = txt;
+  document.getElementById('sv-submit-area').hidden = true;
+  document.getElementById('sv-results-panel').hidden = false;
+  document.getElementById('sv-results-panel').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function svCopyResults() {
+  var txt = document.getElementById('sv-results-text').value;
+  var btn = document.getElementById('sv-copy-btn');
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(txt).then(function(){
+      btn.textContent = '✓ Copied!';
+      setTimeout(function(){ btn.textContent = 'Copy to Clipboard'; }, 2000);
+    }).catch(function(){ svSelectFallback(); });
+  } else {
+    svSelectFallback();
+  }
+}
+
+function svSelectFallback() {
+  var ta = document.getElementById('sv-results-text');
+  ta.select();
+  try { document.execCommand('copy'); } catch(e) {}
+  var btn = document.getElementById('sv-copy-btn');
+  btn.textContent = '✓ Selected — use Ctrl+C / Cmd+C';
+  setTimeout(function(){ btn.textContent = 'Copy to Clipboard'; }, 3000);
+}
+
+function svReset() {
+  SV.answers[SV.version] = {};
+  document.querySelectorAll('.sv-card').forEach(function(c){ c.classList.remove('sv-answered'); });
+  document.querySelectorAll('.sv-scale button, .sv-options button').forEach(function(b){ b.classList.remove('sv-sel'); });
+  var q8 = document.getElementById('sv-q8');
+  if (q8) q8.value = '';
+  document.getElementById('sv-results-panel').hidden = true;
+  document.getElementById('sv-submit-area').hidden = false;
+  svUpdateProgress();
+  var pg = document.getElementById('page-survey');
+  if (pg) window.scrollTo({top: pg.offsetTop, behavior: 'smooth'});
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+  svBuildScales();
+  svUpdateProgress();
+});
 </script>
 </body>
 </html>
