@@ -1470,13 +1470,12 @@ footer{
         <button onclick="svSubmit()" style="background:var(--terracotta);color:white;border:none;border-radius:8px;padding:14px 40px;font-family:inherit;font-size:15px;font-weight:600;cursor:pointer;letter-spacing:0.02em">Submit Survey</button>
       </div>
 
-      <!-- Copy results panel (shown after submit) -->
-      <div id="sv-results-panel" hidden style="background:white;border:1px solid var(--border);border-radius:12px;padding:28px;margin-top:8px">
-        <div style="font-size:18px;font-weight:700;color:var(--navy);margin-bottom:8px">Thank you!</div>
-        <p style="color:var(--text-muted);font-size:14px;margin-bottom:20px">Copy the results below and paste them into your QIP spreadsheet, or email to hello@scrubsandstrollers.com.</p>
-        <textarea id="sv-results-text" readonly style="width:100%;min-height:220px;border:1.5px solid var(--border);border-radius:8px;background:var(--cream);font-family:monospace;font-size:12px;padding:12px;color:var(--text);resize:vertical;line-height:1.6"></textarea>
-        <button onclick="svCopyResults()" id="sv-copy-btn" style="margin-top:12px;background:var(--terracotta);color:white;border:none;border-radius:8px;padding:10px 28px;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer">Copy to Clipboard</button>
-        <button onclick="svReset()" style="margin-top:12px;margin-left:10px;background:transparent;color:var(--terracotta);border:1.5px solid var(--terracotta);border-radius:8px;padding:10px 24px;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer">New Response</button>
+      <!-- Confirmation panel (shown after submit) -->
+      <div id="sv-results-panel" hidden style="background:var(--terracotta-light);border:1px solid var(--terracotta-mid);border-radius:12px;padding:28px;margin-top:8px;text-align:center">
+        <div style="font-size:32px;margin-bottom:12px">✅</div>
+        <div style="font-size:18px;font-weight:700;color:var(--navy);margin-bottom:8px">Response submitted!</div>
+        <p style="color:var(--text-muted);font-size:14px;margin-bottom:20px">Your results have been sent. Thank you for completing the survey.</p>
+        <button onclick="svReset()" style="background:var(--terracotta);color:white;border:none;border-radius:8px;padding:10px 28px;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer">Submit Another Response</button>
       </div>
 
     </div>
@@ -2213,7 +2212,6 @@ function svSubmit() {
   txt += '─────────────────────────────────────────\n';
   txt += 'For: hello@scrubsandstrollers.com\n';
 
-  document.getElementById('sv-results-text').value = txt;
   document.getElementById('sv-submit-area').hidden = true;
   document.getElementById('sv-results-panel').hidden = false;
   document.getElementById('sv-results-panel').scrollIntoView({behavior:'smooth', block:'start'});
