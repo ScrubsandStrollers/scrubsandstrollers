@@ -903,7 +903,7 @@ footer{
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')">Home</a></li>
     <li><a href="#" onclick="showPage('calculator')">Calculator</a></li>
-    <li><a href="#" onclick="showPage('survey')">QIP Survey</a></li>
+    <li><a href="#survey" onclick="showPage('survey')">QIP Survey</a></li>
     <li><a href="#" onclick="showPage('about')">About</a></li>
     <li><a href="#" onclick="showPage('links')">My Favourites</a></li>
   </ul>
@@ -914,7 +914,7 @@ footer{
 <div class="mobile-menu" id="mobileMenu">
   <a href="#" onclick="showPage('home');toggleMenu()">Home</a>
   <a href="#" onclick="showPage('calculator');toggleMenu()">Calculator</a>
-  <a href="#" onclick="showPage('survey');toggleMenu()">QIP Survey</a>
+  <a href="#survey" onclick="showPage('survey');toggleMenu()">QIP Survey</a>
   <a href="#" onclick="showPage('about');toggleMenu()">About</a>
   <a href="#" onclick="showPage('links');toggleMenu()">My Favourites</a>
 </div>
@@ -984,7 +984,7 @@ footer{
           <div style="width:52px;height:52px;background:var(--terracotta);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;margin:0 auto 20px;font-family:'Playfair Display',serif">1</div>
           <h3 style="font-family:'Playfair Display',serif;font-size:18px;color:var(--navy);margin-bottom:10px">Take the pre-session survey</h3>
           <p style="color:var(--text-muted);font-size:14px;line-height:1.6;margin-bottom:20px">2 minutes. Anonymous. Helps us understand awareness levels before you explore the resource.</p>
-          <a href="#" onclick="showPage('survey')" style="display:inline-block;background:var(--terracotta);color:white;text-decoration:none;padding:10px 22px;border-radius:100px;font-size:13px;font-weight:600">PRE Survey →</a>
+          <a href="#survey" onclick="showPage('survey')" style="display:inline-block;background:var(--terracotta);color:white;text-decoration:none;padding:10px 22px;border-radius:100px;font-size:13px;font-weight:600">PRE Survey →</a>
         </div>
 
         <div style="background:var(--cream);border-radius:16px;padding:32px 28px;border:1px solid var(--border);text-align:center">
@@ -1001,7 +1001,7 @@ footer{
           <div style="width:52px;height:52px;background:var(--terracotta);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;margin:0 auto 20px;font-family:'Playfair Display',serif">3</div>
           <h3 style="font-family:'Playfair Display',serif;font-size:18px;color:var(--navy);margin-bottom:10px">Take the post-session survey</h3>
           <p style="color:var(--text-muted);font-size:14px;line-height:1.6;margin-bottom:20px">Tell us what changed. Your responses directly shape this QIP and help other NHS doctors.</p>
-          <a href="#" onclick="showPage('survey')" style="display:inline-block;background:var(--terracotta);color:white;text-decoration:none;padding:10px 22px;border-radius:100px;font-size:13px;font-weight:600">POST Survey →</a>
+          <a href="#survey" onclick="showPage('survey')" style="display:inline-block;background:var(--terracotta);color:white;text-decoration:none;padding:10px 22px;border-radius:100px;font-size:13px;font-weight:600">POST Survey →</a>
         </div>
 
       </div>
@@ -1312,7 +1312,7 @@ footer{
     </div>
     <div style="background:white;border-top:1px solid var(--border);padding:48px 40px;text-align:center">
       <p style="color:var(--text-muted);margin-bottom:20px;font-size:16px">Participating in the QIP? Complete the pre or post session survey below.</p>
-      <a href="#" class="btn-primary" onclick="showPage('survey')">Open QIP Survey →</a>
+      <a href="#survey" class="btn-primary" onclick="showPage('survey')">Open QIP Survey →</a>
     </div>
   </div>
 </div>
@@ -1645,7 +1645,7 @@ footer{
       <div class="footer-links">
         <a href="#" onclick="showPage('home')">Home</a>
         <a href="#" onclick="showPage('calculator')">Calculator</a>
-        <a href="#" onclick="showPage('survey')">QIP Survey</a>
+        <a href="#survey" onclick="showPage('survey')">QIP Survey</a>
         <a href="#" onclick="showPage('about')">About</a>
         <a href="#" onclick="showPage('links')">My Favourites</a>
       </div>
@@ -2059,7 +2059,7 @@ function showPage(name) {
 
 (function initFromHash() {
   const hash = window.location.hash.replace('#', '');
-  const valid = ['home', 'calculator', 'about', 'buy', 'links'];
+  const valid = ['home', 'calculator', 'survey', 'about', 'buy', 'links'];
   if (hash && valid.includes(hash)) showPage(hash);
 })();
 
