@@ -88,6 +88,7 @@ nav{
   padding:14px 28px;border-radius:100px;text-decoration:none;
   font-size:15px;font-weight:500;transition:background 0.2s,color 0.2s,border-color 0.2s;
   display:inline-flex;align-items:center;gap:8px;touch-action:manipulation;
+  cursor:pointer;border:none;font-family:inherit;
 }
 .btn-primary:hover{background:var(--terracotta-dark)}
 .btn-secondary{
@@ -95,6 +96,7 @@ nav{
   padding:14px 28px;border-radius:100px;text-decoration:none;
   font-size:15px;font-weight:500;border:1.5px solid var(--terracotta);
   transition:background 0.2s,color 0.2s,border-color 0.2s;display:inline-flex;align-items:center;gap:8px;touch-action:manipulation;
+  cursor:pointer;font-family:inherit;
 }
 .btn-secondary:hover{background:var(--terracotta-light)}
 .hero-proof{display:flex;gap:32px;flex-wrap:wrap}
@@ -929,9 +931,9 @@ footer{
         <div class="hero-badge">🩺 Free Resource — NHS Doctors</div>
         <h1 class="fade-up">Know your rights.<br><em>Before you need to.</em></h1>
         <p class="hero-sub fade-up">A free maternity pay resource for all NHS resident doctors — whether you're planning a family now or just want to know where you stand.</p>
-        <div class="hero-actions fade-up">
-          <a href="#" class="btn-primary" onclick="showPage('calculator')">Use the Free Calculator <span>→</span></a>
-          <a href="#survey" class="btn-secondary" onclick="showPage('survey');return false">QIP Survey</a>
+        <div class="hero-actions">
+          <button class="btn-primary" onclick="showPage('calculator')">Use the Free Calculator <span>→</span></button>
+          <button class="btn-secondary" onclick="showPage('survey')">QIP Survey</button>
         </div>
         <div class="hero-proof fade-up">
           <div class="proof-stat">
