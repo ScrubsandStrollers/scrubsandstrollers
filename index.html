@@ -962,7 +962,7 @@ footer{
           </div>
           <div class="book-price-row">
             <div>
-              <div class="book-price" style="font-size:22px;color:var(--terracotta-dark)">Free to access</div>
+              <div class="book-price" style="font-size:22px;color:white">Free to access</div>
               <div class="book-price-label">No sign-up required</div>
             </div>
           </div>
@@ -2217,6 +2217,12 @@ function svSubmit() {
   document.getElementById('sv-submit-area').hidden = true;
   document.getElementById('sv-results-panel').hidden = false;
   document.getElementById('sv-results-panel').scrollIntoView({behavior:'smooth', block:'start'});
+
+  fetch('/.netlify/functions/send-survey-results', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ results: txt, version: v }),
+  }).catch(function() {});
 }
 
 function svCopyResults() {
