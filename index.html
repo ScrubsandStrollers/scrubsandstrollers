@@ -702,6 +702,48 @@ nav{
     .dates-grid { grid-template-columns: 1fr; }
     .pay-big { flex-direction: column; }
     .card { padding: 20px; }
+
+    .pay-table, .pay-table thead, .pay-table tbody,
+    .pay-table th, .pay-table td, .pay-table tr { display: block; }
+
+    .pay-table thead tr {
+      position: absolute;
+      top: -9999px;
+      left: -9999px;
+    }
+
+    .pay-table tr {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 10px;
+      padding: 4px 0;
+    }
+
+    .pay-table tbody td {
+      border-bottom: 1px solid var(--border);
+      padding: 8px 12px 8px 44%;
+      position: relative;
+      font-size: 13px;
+      min-height: 36px;
+    }
+
+    .pay-table tbody td:last-child { border-bottom: none; }
+
+    .pay-table tbody td::before {
+      content: attr(data-label);
+      position: absolute;
+      left: 12px;
+      top: 8px;
+      width: 38%;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      line-height: 1.4;
+    }
+
+    .pay-total td { padding: 10px 12px 10px 44%; }
   }
 
   section.section-divider {
@@ -1068,6 +1110,7 @@ footer{
 
 <!-- ══════════════ CALCULATOR PAGE ══════════════ -->
 <div id="page-calculator" class="page">
+
   <div style="padding-top:64px;background:var(--cream);min-height:100vh">
     <div style="max-width:960px;margin:0 auto;padding:60px 40px 40px">
       <div class="section-label">Free Tool</div>
@@ -1192,7 +1235,7 @@ footer{
         <input type="checkbox" id="ltft" />
         <span class="toggle-slider"></span>
       </label>
-      <span class="toggle-label">I plan to return LTFT (Less Than Full Time)</span>
+      <span class="toggle-label">I am currently working LTFT (Less Than Full Time) <span class="sublabel">before maternity leave — this affects your annual leave accrual</span></span>
     </div>
 
     <div id="ltftField" style="display:none; margin-top:8px; margin-bottom:16px;">
@@ -1616,9 +1659,22 @@ footer{
   </div>
 </footer>
 
+<!-- EMAIL GATE OVERLAY — top-level so position:fixed works correctly on iOS Safari -->
+<div id="mc-overlay" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(15,23,42,0.85);align-items:center;justify-content:center;padding:24px;">
+  <div style="background:white;border-radius:16px;padding:48px 40px;max-width:480px;width:100%;text-align:center;box-shadow:0 24px 80px rgba(0,0,0,0.3);">
+    <div style="font-size:13px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--sage);margin-bottom:12px">Free Tool</div>
+    <h2 style="font-family:'Playfair Display',serif;color:var(--navy);font-size:28px;margin-bottom:12px;letter-spacing:-0.3px">Access the Calculator</h2>
+    <p style="color:var(--text-muted);font-size:15px;margin-bottom:28px;line-height:1.6">Enter your email to get free access — plus practical tips on maximising your NHS maternity pay.</p>
+    <input type="email" id="mc-email" placeholder="your@email.com" style="width:100%;box-sizing:border-box;padding:13px 16px;border-radius:8px;border:1.5px solid var(--border);font-size:15px;outline:none;margin-bottom:12px;" />
+    <button onclick="mcSubscribe()" style="width:100%;background:var(--terracotta);color:white;border:none;padding:14px 24px;border-radius:8px;font-size:16px;font-weight:600;cursor:pointer;">Get Free Access →</button>
+    <div id="mc-message" style="margin-top:12px;font-size:14px;min-height:20px;color:var(--text-muted)"></div>
+    <p style="font-size:12px;color:var(--text-muted);margin-top:16px;margin-bottom:0">No spam. Unsubscribe anytime.</p>
+  </div>
+</div>
+
 <script>
 
-// Current SMP weekly rate (April 2025 rate - update annually)
+// Current SMP weekly rate (April 2026 rate - update annually)
 const SMP_WEEKLY = 194.32;
 
 document.getElementById('ltft').addEventListener('change', function() {
@@ -1732,9 +1788,11 @@ function calculate() {
   const returnDeadline = leaveStart ? addWeeks(leaveStart, 52) : null;
   const ompReturnDeadline = leaveStart ? addDays(leaveReturn || leaveEnd, 0) : null;
 
-  // OMP eligibility: 12 months NHS service by start of 11th week before EWC
+  // OMP eligibility: 12 months NHS service by start of 11th week before EWC,
+  // AND still employed at that date (contract must not end before ompCheckDate)
   const nhsMonthsAtOmpCheck = monthsBetween(nhsStart, ompCheckDate);
-  const ompEligible = nhsMonthsAtOmpCheck >= 12;
+  const contractEndedBeforeOmpCheck = contractEnd && contractEnd < ompCheckDate;
+  const ompEligible = nhsMonthsAtOmpCheck >= 12 && !contractEndedBeforeOmpCheck;
 
   // SMP eligibility: 26 weeks with current employer by qualifying week
   const contractWeeksAtQW = Math.floor(daysBetween(contractStart, qualifyingWeek) / 7);
@@ -1796,9 +1854,11 @@ function calculate() {
   const ompBanner = document.getElementById('ompBanner');
   if (ompEligible) {
     ompBanner.innerHTML = `<div class="result-banner success"><div class="icon">✅</div><div><h3>You are likely eligible for Occupational Maternity Pay (OMP)</h3><p>You have approximately <strong>${nhsMonthsAtOmpCheck} months</strong> of continuous NHS service by the OMP eligibility date (${formatShort(ompCheckDate)}). You qualify for the full NHS maternity pay package: 8 weeks full pay, 18 weeks half pay, plus SMP.</p></div></div>`;
+  } else if (contractEndedBeforeOmpCheck) {
+    ompBanner.innerHTML = `<div class="result-banner warning"><div class="icon">⚠️</div><div><h3>You may not qualify for OMP — contract ends before eligibility date</h3><p>Your contract ends on <strong>${formatShort(contractEnd)}</strong>, which is before the OMP eligibility date (<strong>${formatShort(ompCheckDate)}</strong> — 11 weeks before your EWC). OMP requires you to still be employed at that date. Contact the BMA employment helpline to explore whether NHS trainee protections or a lead employer arrangement could help. See Chapter 2 of the guide.</p></div></div>`;
   } else {
     const shortBy = 12 - nhsMonthsAtOmpCheck;
-    ompBanner.innerHTML = `<div class="result-banner warning"><div class="icon">⚠️</div><div><h3>You may not yet qualify for OMP</h3><p>You have approximately <strong>${nhsMonthsAtOmpCheck} months</strong> NHS service by the eligibility date — you need 12 months. You are short by roughly <strong>${shortBy} month${shortBy !== 1 ? 's' : ''}</strong>. You may qualify for SMP only, or Maternity Allowance. Check Chapter 2 of the guide for your options.</p></div></div>`;
+    ompBanner.innerHTML = `<div class="result-banner warning"><div class="icon">⚠️</div><div><h3>You may not yet qualify for OMP</h3><p>You have approximately <strong>${nhsMonthsAtOmpCheck} months</strong> NHS service by the eligibility date — you need 12 months. You are short by roughly <strong>${shortBy} month${shortBy !== 1 ? 's' : ''}</strong>. You may qualify for SMP only, or Maternity Allowance. Check Chapter 3 of the guide for your options.</p></div></div>`;
   }
 
   // SMP Banner
@@ -1809,13 +1869,13 @@ function calculate() {
                    'Your continuous NHS service meets the threshold.';
     smpBanner.innerHTML = `<div class="result-banner info"><div class="icon">ℹ️</div><div><h3>SMP eligibility: likely met</h3><p>${reason} Your SMP will be calculated from payslips in the window <strong>${formatShort(smpCalcStart)} to ${formatShort(smpCalcEnd)}</strong>. Any supplements or pay rises in this window will increase your SMP rate.</p></div></div>`;
   } else {
-    smpBanner.innerHTML = `<div class="result-banner warning"><div class="icon">⚠️</div><div><h3>SMP: may need checking</h3><p>You have <strong>${contractWeeksAtQW} weeks</strong> with your current employer — SMP requires 26 weeks. If your deanery uses a lead employer model, tick that box above. Otherwise, NHS trainee protections may still apply — check Chapter 2 and contact the BMA.</p></div></div>`;
+    smpBanner.innerHTML = `<div class="result-banner warning"><div class="icon">⚠️</div><div><h3>SMP: may need checking</h3><p>You have <strong>${contractWeeksAtQW} weeks</strong> with your current employer — SMP requires 26 weeks. If your deanery uses a lead employer model, tick that box above. Otherwise, NHS trainee protections may still apply — check Chapter 3 and contact the BMA.</p></div></div>`;
   }
 
   // Contract warning
   const contractBanner = document.getElementById('contractBanner');
   if (contractEndsInLeave) {
-    contractBanner.innerHTML = `<div class="result-banner warning"><div class="icon">📋</div><div><h3>Your contract ends during maternity leave (${formatShort(contractEnd)})</h3><p>This does not necessarily mean you must repay OMP. Ask HR in writing: "Can return to a different NHS employer satisfy the 13-week obligation?" You do not need to return to this specific trust. See the email templates in Chapter 7.</p></div></div>`;
+    contractBanner.innerHTML = `<div class="result-banner warning"><div class="icon">📋</div><div><h3>Your contract ends during maternity leave (${formatShort(contractEnd)})</h3><p>This does not necessarily mean you must repay OMP. Ask HR in writing: "Can return to a different NHS employer satisfy the 13-week obligation?" You do not need to return to this specific trust. See the email templates in Chapter 8.</p></div></div>`;
   } else {
     contractBanner.innerHTML = '';
   }
@@ -1901,15 +1961,15 @@ function calculate() {
     payRows.forEach((r, i) => {
       const isLast = i === payRows.length - 1;
       payHTML += `<tr ${isLast ? 'class="pay-total"' : ''}>
-        <td>${r.period}</td>
-        <td>${r.desc}</td>
-        <td>${r.weekly === null ? 'See gov.uk' : r.weekly === 0 ? 'Unpaid' : formatMoney(r.weekly) + '/wk'}</td>
-        <td>${r.weekly === null ? '—' : r.weekly === 0 ? '£0' : formatMoney(r.weekly * r.weeks)}</td>
+        <td data-label="Period">${r.period}</td>
+        <td data-label="Pay Type">${r.desc}</td>
+        <td data-label="Weekly (est.)">${r.weekly === null ? 'See gov.uk' : r.weekly === 0 ? 'Unpaid' : formatMoney(r.weekly) + '/wk'}</td>
+        <td data-label="Total (est.)">${r.weekly === null ? '—' : r.weekly === 0 ? '£0' : formatMoney(r.weekly * r.weeks)}</td>
       </tr>`;
     });
 
     if (totalEstimate > 0) {
-      payHTML += `<tr class="pay-total"><td colspan="3"><strong>Total estimated paid maternity income</strong></td><td><strong>${formatMoney(totalEstimate)}</strong></td></tr>`;
+      payHTML += `<tr class="pay-total"><td colspan="3" data-label="Summary"><strong>Total estimated paid maternity income</strong></td><td data-label="Total"><strong>${formatMoney(totalEstimate)}</strong></td></tr>`;
     }
     payHTML += `</tbody></table>`;
     payHTML += `<p style="font-size:11px;color:var(--text-light);margin-top:8px;">All figures are gross (before tax). SMP rate used: £${SMP_WEEKLY.toFixed(2)}/week (verify current rate at gov.uk). Tax, NI and pension deductions will apply.</p>`;
@@ -1961,14 +2021,10 @@ function calculate() {
   actions.push({ icon: '🗓', text: `<strong>Plan your annual leave on return (${totalAL} days)</strong> — Contact the HR coordinator of your new rotation during your unpaid leave period to arrange annual leave and confirm payroll re-activation.` });
 
   if (contractEndsInLeave) {
-    actions.push({ icon: '✉️', text: `<strong>Ask HR about your fixed-term contract in writing</strong> — Use the email template in Chapter 7 to confirm whether OMP is repayable and how the 13-week return obligation works in your case.` });
+    actions.push({ icon: '✉️', text: `<strong>Ask HR about your fixed-term contract in writing</strong> — Use the email template in Chapter 8 to confirm whether OMP is repayable and how the 13-week return obligation works in your case.` });
   }
 
   actions.push({ icon: '🏥', text: `<strong>Apply for SuppoRTT if out 3+ months</strong> — Contact your deanery 12–16 weeks before return to start the supported return process.` });
-
-  if (ltft) {
-    actions.push({ icon: '📝', text: `<strong>Submit your LTFT application</strong> — Apply via your deanery's PGMDE portal minimum 16 weeks before your intended LTFT start. Notify your TPD at the same time.` });
-  }
 
   document.getElementById('actionList').innerHTML = actions.map(a =>
     `<li><span class="al-icon">${a.icon}</span><span>${a.text}</span></li>`
@@ -1993,7 +2049,20 @@ function showPage(name) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('page-' + name).classList.add('active');
   window.scrollTo({top: 0, behavior: 'smooth'});
+  setTimeout(() => { window.location.hash = name === 'home' ? '' : name; }, 0);
+  const overlay = document.getElementById('mc-overlay');
+  if (name === 'calculator' && !localStorage.getItem('mc-subscribed')) {
+    overlay.style.display = 'flex';
+  } else {
+    overlay.style.display = 'none';
+  }
 }
+
+(function initFromHash() {
+  const hash = window.location.hash.replace('#', '');
+  const valid = ['home', 'calculator', 'about', 'buy', 'links'];
+  if (hash && valid.includes(hash)) showPage(hash);
+})();
 
 function toggleMenu() {
   const m = document.getElementById('mobileMenu');
@@ -2189,6 +2258,42 @@ document.addEventListener('DOMContentLoaded', function(){
   svBuildScales();
   svUpdateProgress();
 });
+
+function mcDismissOverlay() {
+  const overlay = document.getElementById('mc-overlay');
+  if (overlay) overlay.style.display = 'none';
+  localStorage.setItem('mc-subscribed', '1');
+}
+
+async function mcSubscribe() {
+  const email = document.getElementById('mc-email').value.trim();
+  const msg = document.getElementById('mc-message');
+  if (!email || !email.includes('@')) {
+    msg.style.color = 'var(--terracotta)';
+    msg.textContent = 'Please enter a valid email address.';
+    return;
+  }
+  msg.style.color = 'var(--text-muted)';
+  msg.textContent = 'Subscribing…';
+  try {
+    const res = await fetch('/.netlify/functions/mailchimp-subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email }),
+    });
+    const data = await res.json();
+    if (data.success) {
+      mcDismissOverlay();
+    } else {
+      msg.style.color = 'var(--terracotta)';
+      msg.textContent = data.error || 'Something went wrong. Please try again.';
+    }
+  } catch {
+    msg.style.color = 'var(--terracotta)';
+    msg.textContent = 'Something went wrong. Please try again.';
+  }
+}
 </script>
 </body>
 </html>
+
